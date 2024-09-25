@@ -11,7 +11,7 @@ def cost_function(position):
 
 # Função de atração entre vaga-lumes
 def firefly_algorithm(quality_matrix, num_fireflies, iterations, alpha=0.2, beta=1, gamma=1):
-    fireflies = np.random.rand(num_fireflies, 2) * 9  # Inicia vaga-lumes em posições aleatórias
+    fireflies = np.random.rand(num_fireflies, 2) * 10  # Inicia vaga-lumes em posições aleatórias dentro dos limites
     best_solution = fireflies[0]
     best_cost = cost_function(best_solution)
 
@@ -22,6 +22,9 @@ def firefly_algorithm(quality_matrix, num_fireflies, iterations, alpha=0.2, beta
                     r = np.linalg.norm(fireflies[i] - fireflies[j])  # Distância entre vaga-lumes
                     beta_attraction = beta * np.exp(-gamma * r ** 2)  # Atração entre vaga-lumes
                     fireflies[i] = fireflies[i] + beta_attraction * (fireflies[j] - fireflies[i]) + alpha * (np.random.rand(2) - 0.5)
+
+                    # Garante que os vaga-lumes permaneçam dentro dos limites da matriz
+                    fireflies[i] = np.clip(fireflies[i], 0, 9)
 
                     # Atualiza a melhor solução
                     current_cost = cost_function(fireflies[i])
